@@ -26,6 +26,9 @@ app.use((req, res, next) => {
 });
 
 
-app.use('/join', joinRouter);
+//app.use('*', joinRouter);
+
+// make sure this stays as the last endpoint
+app.get('*', joinRouter)
 
 export default app;
