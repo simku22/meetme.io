@@ -2,9 +2,24 @@ import express from 'express';
 
 var router = express.Router();
 
+// just adds a new meeting that is inactive and connected to eventName and userID
 router.post('/create', async(req, res) => {
-    res.send('create event')
+    try{
+        const { eventName, userID } = req.body;
+        //maybe we should check to see that this userID exists in the users table
+        const createMeetingQuery = `INSERT INTO events (event_name, user_id, created, is_active)
+        VALUES ('${eventName}', '${userID}', GETDATE(), 0);`
+        await req.sql.query(createMeetingQuery)
+        res.send('success')
+    } catch (error) {
+        res.status(500).json({ status: 'error', error: error.message });
+    }
 });
+
+router.get('/', async(req, res) => {
+    //idk how we should handle this at the moment 
+
+})
 
 router.post('/:eventID/checkin', async(req, res) => {
     // get the event row from the eventID
