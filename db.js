@@ -11,6 +11,6 @@ var config = {
 
 }
 
-await sql.connect(config)
+await sql.connect(config).then(console.log('connected to meetmeDB'))
 
 export default sql

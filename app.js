@@ -9,6 +9,7 @@ import { dirname } from 'path';
 //import models from './models.js';
 import sql from './db.js'
 import joinRouter from './routes/join.js';
+import eventRouter from './routes/eventRoutes.js';
 import testRouter from './routes/test.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
 
 //app.use('*', joinRouter);
 app.use('/test', testRouter)
+app.use('/events', eventRouter)
 // make sure this stays as the last endpoint
 app.get('*', joinRouter)
 
