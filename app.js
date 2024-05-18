@@ -9,6 +9,7 @@ import { dirname } from 'path';
 
 import sql from './db.js'
 import eventRouter from './routes/eventRoutes.js';
+import userRouter from './routes/userRoutes.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -31,5 +32,6 @@ app.use((req, res, next) => {
 
 
 app.use('/events', eventRouter)
+app.use('/users', userRouter)
 
 export default app;
