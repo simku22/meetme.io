@@ -28,7 +28,12 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/events', eventRouter)
-app.use('/users', userRouter)
+app.get('/', (req, res, next) => {
+    res.type('html');
+    res.send('<p>Test</p>');
+})
+
+app.use('/event', eventRouter)
+app.use('/user', userRouter)
 
 export default app;
