@@ -1,7 +1,10 @@
 import logo from './logo.svg';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { useEffect, useState} from 'react';
 import { Header } from './Header.js';
 import { Footer } from './Footer.js';
+import { Theme } from '@radix-ui/themes';
+import { LandingPage } from './Landing.js'
 import axios from 'axios';
 import './App.css';
 
@@ -14,16 +17,32 @@ import './App.css';
 // }
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(true);
+
+  function toggleLoggedIn() {
+    setLoggedIn(!loggedIn);
+  };
+
   return (
     <div id="app" className='ml-36 mr-36'>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-
-        </Routes>
-        {/* TODO: STYLE FOOTER */}
-        <Footer />
-      </BrowserRouter>
+      <Theme
+        accentColor="green"
+        grayColor="slate"
+        panelBackground="translucent"
+        scaling="100%"
+        radius="medium"
+        appearance="inherit"
+      >
+        <BrowserRouter>
+          <Header login={toggleLoggedIn} loggedin={loggedIn}/>
+          <Routes>
+            <Route path="/" element={
+              <LandingPage />
+            } />
+          </Routes>
+          {/* <Footer /> */}
+        </BrowserRouter>
+      </Theme>
     </div>
   );
 }
