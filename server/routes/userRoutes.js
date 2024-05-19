@@ -1,5 +1,4 @@
 import express from 'express';
-
 var router = express.Router();
 
 router.post('/create', async(req, res) => {
@@ -16,6 +15,20 @@ router.post('/create', async(req, res) => {
         res.status(500).json({ status: 'error', error: error.message });
     }
 })
+
+router.get('/myIdentity', async (req, res, next) => {
+    if(req.session.isAuthenticated){
+        res.json({ 
+            status: 'loggedin',  
+            userInfo: {
+                name: req.session.account.name,
+                username: req.session.account.username,
+            }
+        });
+    } else{
+        res.json({ status: 'loggedout' });
+    }
+});
 
 function validateEmail(email) {
     var re = new RegExp(/\S+@\S+\.\S+/);

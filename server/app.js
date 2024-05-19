@@ -8,6 +8,7 @@ import { dirname } from 'path';
 import sessions from 'express-session';
 import WebAppAuthProvider from 'msal-node-wrapper';
 import sql from './db.js'
+import cors from 'cors';
 import eventRouter from './routes/eventRoutes.js';
 import userRouter from './routes/userRoutes.js';
 
@@ -18,7 +19,7 @@ const authConfig = {
    	    clientId: process.env.CLIENT_ID,
     	authority: process.env.AUTHORITY,
     	clientSecret: process.env.CLIENT_SECRET,
-    	redirectUri: "http://localhost:3001/redirect"
+    	redirectUri: "http://localhost:3000/redirect"
     },
 	system: {
     	loggerOptions: {
@@ -37,6 +38,7 @@ const __dirname = dirname(__filename);
 var app = express();
 
 app.enable('trust proxy');
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
