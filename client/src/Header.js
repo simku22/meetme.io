@@ -1,16 +1,20 @@
-import { Switch, Link } from 'react-router-dom';
-import { Button } from '@radix-ui/themes';
+import { Button, Spinner } from '@radix-ui/themes';
 import axios from 'axios';
+import { useIsAuthenticated } from '@azure/msal-react';
+import { useMsal } from '@azure/msal-react';
 
-export const Header = (props) => {
-  async function logIn() {
-    let response = await axios.get('http://localhost:3000/signin')
-    .catch((error) => {
-      console.log(error);
-    })
-    console.log(response);
-    // props.login();
-  }
+export const Header = () => {
+  const isAuthenticated = useIsAuthenticated();
+
+  const { instance, inProgress } = useMsal();
+
+  const initializeSignIn = () => {
+    instance.loginRedirect();
+  };
+
+  const initializeLogOut = () => {
+    instance.logoutRedirect();
+  };
 
   return (
     <>
@@ -19,8 +23,12 @@ export const Header = (props) => {
           <img className="m-4 ml-2 mr-3 h-8" src="checked.png" alt="imhere.io main logo" />
         </div>
         <div className="flex flex-row justify-center items-center">
-          {props.loggedin && <img src="user.png" className="h-8 m-2 transform hover:scale-110 transition-transform" />}
-          {!props.loggedin && <Button onClick={logIn} className="h-8 m-2" size="2" variant="soft">Login</Button>}
+          {isAuthenticated && <img src="user.png" className="h-8 m-2 transform hover:scale-110 transition-transform" />}
+          {!inProgress ? <Spinner /> : (
+            <Button className="h-8 m-2" size="2" variant="soft" onClick={isAuthenticated ? initializeLogOut : initializeSignIn}>
+              {isAuthenticated ? "Logout" : "Login"}
+            </Button>
+          )}
           <a className="ml-auto" href="test" target="_blank" rel="noopener noreferrer">
             <img
               className="h-6 transform hover:scale-110 transition-transform"
