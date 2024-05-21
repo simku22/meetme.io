@@ -1,5 +1,5 @@
-import { Routes, BrowserRouter, Route, useLocation } from 'react-router-dom';
-import { useState} from 'react';
+import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Header } from './Header.js';
 import { Footer } from './Footer.js';
@@ -8,8 +8,6 @@ import { LandingPage } from './Landing.js'
 import './App.css';
 
 function App() {
-  let loginState = axios.get(`${window.location.origin}/user/myIdentity`).then(function (res) { return res.data });
-
   return (
     <div id="app" className='ml-36 mr-36'>
       <Theme
@@ -21,11 +19,9 @@ function App() {
         appearance="inherit"
       >
         <BrowserRouter>
-          <Header loginState={loginState}/>
+          <Header/>
           <Routes>
-            <Route path="/" element={
-              <LandingPage />
-            } />
+            <Route path="/" element={ <LandingPage /> } />
           </Routes>
           {/* <Footer /> */}
         </BrowserRouter>
