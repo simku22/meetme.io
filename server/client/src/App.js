@@ -32,7 +32,7 @@ function App() {
         <BrowserRouter>
           <Header updateLogin={alterLoginStatus}/>
           <Routes>
-            <Route path="/" element={ <LandingPage /> } />
+            <Route path="/" element={ <LandingPage logindata={loginData} /> } />
           </Routes>
           {/* <Footer /> */}
         </BrowserRouter>
