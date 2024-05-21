@@ -1,20 +1,7 @@
 import { Button, Spinner } from '@radix-ui/themes';
-import axios from 'axios';
-import { useIsAuthenticated } from '@azure/msal-react';
-import { useMsal } from '@azure/msal-react';
 
-export const Header = () => {
-  const isAuthenticated = useIsAuthenticated();
-
-  const { instance, inProgress } = useMsal();
-
-  const initializeSignIn = () => {
-    instance.loginRedirect();
-  };
-
-  const initializeLogOut = () => {
-    instance.logoutRedirect();
-  };
+export const Header = (props) => {
+  const isAuthenticated = (props.loginState.status === 'loggedin');
 
   return (
     <>
@@ -24,11 +11,11 @@ export const Header = () => {
         </div>
         <div className="flex flex-row justify-center items-center">
           {isAuthenticated && <img src="user.png" className="h-8 m-2 transform hover:scale-110 transition-transform" />}
-          {!inProgress ? <Spinner /> : (
-            <Button className="h-8 m-2" size="2" variant="soft" onClick={isAuthenticated ? initializeLogOut : initializeSignIn}>
+          <a href={isAuthenticated ? `${window.location.origin}/signout` : `${window.location.origin}/signin`}>
+            <Button className="h-8 m-2" size="2" variant="soft">
               {isAuthenticated ? "Logout" : "Login"}
             </Button>
-          )}
+          </a>
           <a className="ml-auto" href="test" target="_blank" rel="noopener noreferrer">
             <img
               className="h-6 transform hover:scale-110 transition-transform"
