@@ -1,4 +1,4 @@
-import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import { Routes, BrowserRouter, Route, useLocation } from 'react-router-dom';
 import { useState} from 'react';
 import axios from 'axios';
 import { Header } from './Header.js';
@@ -28,7 +28,6 @@ function App() {
             } />
           </Routes>
           {/* <Footer /> */}
-          <p>{process.env.proxy}</p>
         </BrowserRouter>
       </Theme>
     </div>
