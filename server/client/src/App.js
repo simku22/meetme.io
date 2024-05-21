@@ -1,9 +1,10 @@
-import { Routes, BrowserRouter, Route } from 'react-router-dom';
+import { Routes, HashRouter, Route } from 'react-router-dom';
 import { useState } from 'react';
 import { Header } from './Header.js';
 import { Footer } from './Footer.js';
 import { Theme } from '@radix-ui/themes';
 import { LandingPage } from './Landing.js';
+import { JoinMeeting } from './JoinMeeting.js';
 import axios from 'axios';
 import './App.css';
 
@@ -29,13 +30,14 @@ function App() {
         radius="medium"
         appearance="inherit"
       >
-        <BrowserRouter>
-          <Header updateLogin={alterLoginStatus}/>
+        <HashRouter>
+          {<Header updateLogin={alterLoginStatus}/>}
           <Routes>
             <Route path="/" element={ <LandingPage logindata={loginData} /> } />
+            <Route path="/join/:eventID" element={ <JoinMeeting/> } />
           </Routes>
           {/* <Footer /> */}
-        </BrowserRouter>
+        </HashRouter>
       </Theme>
     </div>
   );

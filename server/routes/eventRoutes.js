@@ -42,7 +42,7 @@ router.post('/:eventID/checkin', async(req, res) => {
     // at this point, we know we have an existing event that is currently active
     // we should now add the attendee to the most currently started meeting
     //                                          ^ this implementation can change if we find anything better
-    const queryString = `SELECT TOP 1 meeting_id, is_active FROM meetings WHERE event_id = ${eventID} ORDER BY created DESC`
+    const queryString = `SELECT TOP 1 meeting_id FROM meetings WHERE event_id = ${eventID} ORDER BY created DESC`
     const meetingResp = await req.sql.query(queryString)
     const meetingID = meetingResp.recordset[0].meeting_id
     // should probably check to make sure meeting_id is valid or something
