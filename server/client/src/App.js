@@ -1,13 +1,24 @@
 import { Routes, BrowserRouter, Route } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import { Header } from './Header.js';
 import { Footer } from './Footer.js';
 import { Theme } from '@radix-ui/themes';
-import { LandingPage } from './Landing.js'
+import { LandingPage } from './Landing.js';
+import axios from 'axios';
 import './App.css';
 
 function App() {
+  const [loginStatus, setLoginStatus] = useState(false);
+  const [loginData, setLoginData] = useState({});
+
+  function alterLoginStatus(status, data) {
+    setLoginStatus(status);
+    setLoginData(data);
+  }
+
+  console.log(loginStatus);
+  console.log(loginData);
+
   return (
     <div id="app" className='ml-36 mr-36'>
       <Theme
@@ -19,7 +30,7 @@ function App() {
         appearance="inherit"
       >
         <BrowserRouter>
-          <Header/>
+          <Header updateLogin={alterLoginStatus}/>
           <Routes>
             <Route path="/" element={ <LandingPage /> } />
           </Routes>

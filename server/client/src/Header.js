@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 
-export const Header = () => {
+export const Header = (props) => {
   const location = useNavigate(); // Get the current route location
 
   // const [userEmail, setUserEmail] = useState('');
   const [loginStatus, setLoginStatus] = useState(false);
+  const [loginData, setLoginData] = useState({});
 
   useEffect(() => {
     const showMe = async () => {
@@ -15,6 +16,8 @@ export const Header = () => {
       console.log('Entered in root useEffect');
       if (res && res.data && res.data.status) {
         setLoginStatus(res.data.status === 'loggedin');
+        setLoginData(res.data);
+        props.updateLogin(res.data.status === 'loggedin', res.data)
       } else {
         console.log("error fetching login state");
       }
