@@ -4,9 +4,8 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 
 export const Header = (props) => {
-  const location = useNavigate(); // Get the current route location
+  const location = useNavigate();
 
-  // const [userEmail, setUserEmail] = useState('');
   const [loginStatus, setLoginStatus] = useState(false);
   const [loginData, setLoginData] = useState({});
 
@@ -17,7 +16,10 @@ export const Header = (props) => {
       if (res && res.data && res.data.status) {
         setLoginStatus(res.data.status === 'loggedin');
         setLoginData(res.data);
-        props.updateLogin(res.data.status === 'loggedin', res.data)
+        props.updateLogin(res.data.status === 'loggedin', res.data);
+        await axios.post(`${window.location.origin}/user/create`, {
+          email: res.data.userInfo.username,
+        });
       } else {
         console.log("error fetching login state");
       }
