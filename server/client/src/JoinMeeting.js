@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSearchParams, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 export const JoinMeeting = () => {

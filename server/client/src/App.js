@@ -4,6 +4,7 @@ import { Header } from './Header.js';
 import { Footer } from './Footer.js';
 import { Theme } from '@radix-ui/themes';
 import { LandingPage } from './Landing.js';
+import { Dashboard } from './Dashboard.js';
 import { JoinMeeting } from './JoinMeeting.js';
 import axios from 'axios';
 import './App.css';
@@ -35,6 +36,7 @@ function App() {
           <Routes>
             <Route path="/" element={ <LandingPage logindata={loginData} /> } />
             <Route path="/join/:eventID" element={ <JoinMeeting/> } />
+            <Route path="/event/:eventID/dashboard" element={ <Dashboard/> } />
           </Routes>
           {/* <Footer /> */}
         </HashRouter>

@@ -54,6 +54,37 @@ router.post('/:eventID/checkin', async(req, res) => {
     const attendeeResp = await req.sql.query(addAttendeeQuery)
     res.send(`success adding ${name} to the event`)
 })
+router.get('/:eventID/currentAttendees', async(req, res) => {
+    try {
+        const { eventID } = req.params;
+        // check if the event exists
+        const eventResp = await req.sql.query('SELECT * FROM events WHERE event_id = ' + eventID);
+        const event = eventResp.recordset[0];
+        if (!event) {
+            res.status(404).send('There is no event record with that event ID');
+            return;
+        }
+
+        // check if the event is active
+        if (!event.is_active) {
+            res.status(404).send('The event at this event ID is not currently active');
+            return;
+        }
+
+        // get the newest meeting for the event
+        const meetingResp = await req.sql.query(`SELECT TOP 1 meeting_id FROM meetings WHERE event_id = ${eventID} ORDER BY created DESC`);
+        const meetingID = meetingResp.recordset[0].meeting_id;
+
+        // get all attendees for the meeting
+        const attendeesResp = await req.sql.query(`SELECT * FROM attendees WHERE meeting_id = ${meetingID}`);
+        const attendees = attendeesResp.recordset;
+
+        res.json(attendees);
+    } catch (error) {
+        res.status(500).json({ status: 'error', error: error.message });
+    }
+});
+
 
 router.put('/:eventID/end', async(req, res) => {
     try{
