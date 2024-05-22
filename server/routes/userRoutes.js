@@ -7,7 +7,10 @@ router.post('/create', async(req, res) => {
         if (!validateEmail(email)) res.status(500).json({ status: 'error', error: 'email in incorrect format'});
         const createUserQuery = `
             INSERT INTO users (user_email, signup_date)
-            VALUES ('${email}', GETDATE());
+            SELECT DISTINCT '${email}' as email, GETDATE() as date
+            FROM users
+            WHERE '${email}' NOT IN
+            (select user_email from users);
         `
         await req.sql.query(createUserQuery);
         res.send('success');
