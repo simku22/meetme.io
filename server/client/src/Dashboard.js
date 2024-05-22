@@ -3,6 +3,8 @@ import { Button, Grid, Box, DecorativeBox } from '@radix-ui/themes';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import QRCode from "react-qr-code";
+
 export const Dashboard = (props) => {
     const [users, setUsers] = useState([]);
     const { eventID } = useParams();
@@ -19,16 +21,15 @@ export const Dashboard = (props) => {
         fetchUsers();
     }, []);
 
-    
-
     return (
         <>
             <Grid rows="auto" columns="1fr 1fr">
-                <Box style={{ backgroundColor: 'lightgray', padding: '20px', borderRadius: '10px' }}>
-                    {/* QR code */}
-                    {/* Use qrcode.js library to generate QR code based on the URL */}
-                    {/* Display the generated QR code here */}
-                    <img src="qrcode.png" alt="QR Code" style={{ width: '200px', height: '200px' }} />
+                <Box id="canvas" style={{ width: '200px', height: '200px', backgroundColor: 'lightgray', padding: '20px', borderRadius: '10px' }}>
+                    <QRCode
+                        size={256}
+                        style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                        value={`http://localhost:3000/`}
+                    />
                 </Box>
                 <Box style={{ backgroundColor: 'lightblue', padding: '20px', borderRadius: '10px' }}>
                     {/* Information box */}

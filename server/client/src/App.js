@@ -10,15 +10,11 @@ import axios from 'axios';
 import './App.css';
 
 function App() {
-  const [loginStatus, setLoginStatus] = useState(false);
   const [loginData, setLoginData] = useState({});
 
-  function alterLoginStatus(status, data) {
-    setLoginStatus(status);
+  function userSignIn(data) {
     setLoginData(data);
   }
-
-  console.log(loginStatus);
   console.log(loginData);
 
   return (
@@ -32,9 +28,9 @@ function App() {
         appearance="inherit"
       >
         <HashRouter>
-          {<Header updateLogin={alterLoginStatus}/>}
+          {<Header updateLogin={userSignIn}/>}
           <Routes>
-            <Route path="/" element={ <LandingPage logindata={loginData} /> } />
+            <Route path="/" element={ <LandingPage session={loginData} /> } />
             <Route path="/join/:eventID" element={ <JoinMeeting/> } />
             <Route path="/event/:eventID/dashboard" element={ <Dashboard/> } />
           </Routes>

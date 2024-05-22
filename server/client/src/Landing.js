@@ -1,26 +1,52 @@
 import { Link } from 'react-router-dom';
-import { Button, Box } from '@radix-ui/themes';
-import React, {useEffect} from 'react';
+import { Button, Box, Spinner } from '@radix-ui/themes';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 
 export const LandingPage = (props) => {
-    const { logindata } = props;
-    /*
-    const fetchData = async () => {
-        try {
-            const res = await axios.get(`${window.location.origin}/user/past-events`);
-            // handle the response data here
-        } catch (error) {
-            // handle the error here
-        }
-    };
+    const { session } = props;
+    const [eventBoxes, setEventBoxes] = useState([]);
+    const [renderSpinner, setRenderSpinner] = useState(false);
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setRenderSpinner(true);
+                const res = await axios.get(`${window.location.origin}/user/past-events`);
+                console.log(res);
+                setEventBoxes(res.data.map((event) => {
+                    return (
+                        <Box>
+                            <h1>{event.event_name}</h1>
+                            <p>{event.is_active}</p>
+                            <Link to={`/event/${event.event_id}/dashboard`}>
+                                <Button>{event.event_name}</Button>
+                            </Link>
+                        </Box>
+                    );
+                }));
+                console.log(eventBoxes);
+                setRenderSpinner(false);
+            } catch (error) {
+                console.log(error);
+            }
+        };
         fetchData();
-    }, []); */
+    }, []);
+
+    // for each result in data in this format map a radix ui box to repersent an event
+    // {
+    //     "event_id": 1011,
+    //     "event_name": "simon crib",
+    //     "created": null,
+    //     "user_id": 16,
+    //     "is_active": true
+    // }
+
     return (
         <Box justify="center" align="center" m="4">
-            {/* you can call logindata here */}
+            {eventBoxes.length === 0 ? (session.status === 'loggedin' ? <Spinner /> : <p>Signin please!</p>): eventBoxes}
+            {/* {renderSpinner && <Spinner />} */}
         </Box>
     );
 };
