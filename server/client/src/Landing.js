@@ -6,12 +6,10 @@ import axios from 'axios';
 export const LandingPage = (props) => {
     const { session } = props;
     const [eventBoxes, setEventBoxes] = useState([]);
-    const [renderSpinner, setRenderSpinner] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                setRenderSpinner(true);
                 const res = await axios.get(`${window.location.origin}/user/past-events`);
                 console.log(res);
                 setEventBoxes(res.data.map((event) => {
@@ -26,7 +24,6 @@ export const LandingPage = (props) => {
                     );
                 }));
                 console.log(eventBoxes);
-                setRenderSpinner(false);
             } catch (error) {
                 console.log(error);
             }
@@ -46,7 +43,6 @@ export const LandingPage = (props) => {
     return (
         <Box justify="center" align="center" m="4">
             {eventBoxes.length === 0 ? (session.status === 'loggedin' ? <Spinner /> : <p>Signin please!</p>): eventBoxes}
-            {/* {renderSpinner && <Spinner />} */}
         </Box>
     );
 };
