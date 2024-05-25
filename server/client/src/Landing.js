@@ -31,14 +31,6 @@ export const LandingPage = (props) => {
                                         </DataList.Value>
                                     </DataList.Item>
                                     <DataList.Item>
-                                        <DataList.Label minWidth="88px">Event ID Exists</DataList.Label>
-                                        <DataList.Value>
-                                        <Badge color={event.event_id ? "jade" : "gray"} variant="soft" radius="full">
-                                            {event.event_id ? "true" : "false"}
-                                        </Badge>
-                                        </DataList.Value>
-                                    </DataList.Item>
-                                    <DataList.Item>
                                         <DataList.Label minWidth="88px">Event Dashboard</DataList.Label>
                                         <DataList.Value>
                                         <Link to={`/event/${event.event_id}/dashboard`}>
