@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Button, Box, Spinner, DataList, Badge, Flex, Card, Grid, Container } from '@radix-ui/themes';
+import { Button, Box, Spinner, DataList, Badge, Flex, Card, Grid, Container, Code } from '@radix-ui/themes';
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 
@@ -7,12 +7,30 @@ export const LandingPage = (props) => {
     const { session } = props;
     const [eventBoxes, setEventBoxes] = useState([]);
 
+    const data = [
+        {
+            "event_id": 1011,
+            "event_name": "simon crib",
+            "created": null,
+            "user_id": 16,
+            "is_active": true
+        },
+        {
+            "event_id": 1012,
+            "event_name": "WAP listening party",
+            "created": null,
+            "user_id": 16,
+            "is_active": true
+        }
+    ]
+
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`${window.location.origin}/user/past-events`);
-                console.log(res);
-                setEventBoxes(res.data.map((event) => {
+                // const res = await axios.get(`${window.location.origin}/user/past-events`);
+                // console.log(res);
+                // setEventBoxes(res.data.map((event) => {
+                setEventBoxes(data.map((event) => {
                     return (
                         <Box>
                             <Card className="m-4">
@@ -53,13 +71,15 @@ export const LandingPage = (props) => {
     }, []);
 
     return (
-        <Container justify="center" align="center" m="4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Container justify="center" align="center" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             {/* <Flex gap="3"> */}
                 {/* // can you make a big button here that says "Create Event" and links to /create-event */}
                 <Link to="/create-event">
-                    {session.status === 'loggedin' && <Button size="4" className="m-4" variant="soft">Create Event</Button>}
+                    {/* {session.status === 'loggedin' && <Button size="4" className="m-4" variant="soft">Create Event</Button>} */}
+                    <Button size="4" className="m-4" variant="soft"><b>Create Event</b></Button>
                 </Link>
-                <Grid columns="1" rows="2" width="auto">
+                <Code>console.log()</Code>
+                <Grid columns="2" rows="2" width="auto">
                     {eventBoxes.length === 0 ? (session.status === 'loggedin' ? <Spinner /> : <p>Signin please!</p>): eventBoxes}
                 </Grid>
             {/* </Flex> */}
