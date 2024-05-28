@@ -37,7 +37,7 @@ export const Header = (props) => {
               {loginData.status === 'loggedin' ? "Logout" : "Login"}
             </Button>
           </a>
-          <a className="ml-auto" href="test" target="_blank" rel="noopener noreferrer">
+          <a className="ml-auto" href="https://github.com/info441-sp24/final-project-simku22" target="_blank" rel="noopener noreferrer">
             <img
               className="h-6 transform hover:scale-110 transition-transform"
               src="github.png"

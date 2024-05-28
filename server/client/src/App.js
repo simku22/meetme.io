@@ -17,13 +17,13 @@ function App() {
   }
   console.log(loginData);
 
-  const mockData = {
-    "status": "loggedin",
-    "userInfo": {
-        "name": "Simon Kurgan",
-        "username": "simku22@uw.edu"
-    }
-  }
+  // const mockData = {
+  //   "status": "loggedin",
+  //   "userInfo": {
+  //       "name": "Simon Kurgan",
+  //       "username": "simku22@uw.edu"
+  //   }
+  // }
 
   return (
     <Theme
@@ -38,7 +38,7 @@ function App() {
           <HashRouter>
             {<Header updateLogin={userSignIn}/>}
             <Routes>
-              <Route path="/" element={ <LandingPage session={mockData} /> } />
+              <Route path="/" element={ <LandingPage session={loginData} /> } />
               <Route path="/join/:eventID" element={ <JoinMeeting/> } />
               <Route path="/event/:eventID/dashboard" element={ <Dashboard/> } />
             </Routes>
