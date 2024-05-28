@@ -1,4 +1,6 @@
-import sql from 'mssql'
+import sql from 'mssql';
+import dotenv from 'dotenv';
+dotenv.config();
 
 var config = {
     user: 'admin1',
@@ -8,9 +10,8 @@ var config = {
     options: {
         encrypt: true
     }
-
 }
 
-await sql.connect(config)
+await sql.connect(config).then(console.log('connected to meetmeDB'))
 
 export default sql
