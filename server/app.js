@@ -11,6 +11,7 @@ import sql from './db.js'
 import cors from 'cors';
 import eventRouter from './routes/eventRoutes.js';
 import userRouter from './routes/userRoutes.js';
+import enableWs from 'express-ws';
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ const __dirname = dirname(__filename);
 
 var app = express();
 
+enableWs(app);
 app.enable('trust proxy');
 app.use(cors());
 app.use(logger('dev'));
@@ -73,8 +75,11 @@ app.get('/signout', (req, res, next) => {
     })(req, res, next);
 });
 
-app.use(authProvider.interactionErrorHandler());
+app.ws('/eventSocket', (ws, res) => {
+    console.log("someone has connected to the events ws");
+}) 
 
+app.use(authProvider.interactionErrorHandler());
 
 app.use('/event', eventRouter)
 app.use('/user', userRouter)

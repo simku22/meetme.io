@@ -39,7 +39,12 @@ router.get('/past-events', async(req, res) => {
             const user_id = result.recordset[0].user_id;
             const resp = await req.sql.query(`SELECT * FROM events WHERE user_id = ${user_id} ORDER BY created DESC`)
             const users_meetings = resp.recordset;
-            res.status(200).json(users_meetings);
+            res.status(200).json(
+                {
+                    meetings: users_meetings, 
+                    userId: user_id
+                }
+            );
         } catch (error) {
             res.status(500).json({ status: 'error', error: error.message });
         }

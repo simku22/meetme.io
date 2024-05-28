@@ -1,13 +1,14 @@
 
 import { Button, Grid, Box, DecorativeBox, Spinner, DataList, Badge, Flex, Card, TextField, Heading, Text, Separator } from '@radix-ui/themes';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback} from 'react';
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import QRCode from "react-qr-code";
+import { WebSocketDemo } from './websocketDemo';
 
 export const Dashboard = (props) => {
-    const [users, setUsers] = useState([]);
+    const [ users, setUsers ] = useState([]);
     const { eventID } = useParams();
 
     const WS_URL = `${window.location.origin}/eventSocket`;
@@ -31,7 +32,6 @@ export const Dashboard = (props) => {
         }
     }, [readyState])
     
-      // Run when a new WebSocket message is received (lastJsonMessage)
     useEffect(() => {
         console.log(`Got a new message: ${lastJsonMessage}`)
     }, [lastJsonMessage])
@@ -84,6 +84,7 @@ export const Dashboard = (props) => {
                      <p id={'attendees_' + eventID} style={{ fontSize: '18px', fontWeight: 'bold' }}>{users}</p>
                  </Box>
             </div>
+            <WebSocketDemo />
         </div>
     );
 }
