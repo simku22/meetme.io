@@ -68,3 +68,13 @@ We intend to use PostgreSQL or MySQL to store data in our MVP. Provided this wil
 `GET` /event/:eventId/past-meetings - Get all meetings for an appropriate event ID
 
 `GET` /user/:userId/past-events - Get past events for a user (on dashboard load)
+
+## MVP Images
+
+![alt text](/server/descriptionimages/IMG_4983.png)
+
+![alt text](/server/descriptionimages/image.png)
+
+![alt text](/server/descriptionimages/image-1.png)
+
+![alt text](/server/descriptionimages/image-2.png)
