@@ -21,9 +21,9 @@ As developers, we want to build this app to explore 1) how to create an easy-to-
 
 # Design
 
-![alt text](./descriptionimages/landingpage.png)
+![alt text](./server/descriptionimages/landingpage.png)
 
-![alt text](./descriptionimages/meetingpage.png)
+![alt text](./server/descriptionimages/meetingpage.png)
 
 # Technical Description
 
@@ -33,11 +33,11 @@ We intend to use a REST-based system for transmitting data. Below you will find 
 
 We intend to use PostgreSQL or MySQL to store data in our MVP. Provided this will be our first time hosting such a db, we anticipate we may need to migrate to MongoDB. In that case, an updated schema for a NoSQL system will be updated within this document.
 
-![alt text](./descriptionimages/database.png)
+![alt text](./server/descriptionimages/database.png)
 
 ## User Flow + Data Flow Diagram
 
-![alt text](./descriptionimages/userflow.png)
+![alt text](./server/descriptionimages/userflow.png)
 
 ## User Stories Summary Table
 
