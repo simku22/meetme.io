@@ -9,3 +9,16 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+.eventDashboard {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: 0.5fr 0.
+}
+
+@media only screen and (max-width: 550px) {
+  .eventDashboard {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.5fr 2fr;
+  }
+}

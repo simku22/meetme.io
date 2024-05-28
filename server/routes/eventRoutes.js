@@ -16,11 +16,6 @@ router.post('/create', async(req, res) => {
     }
 });
 
-router.get('/', async(req, res) => {
-    //idk how we should handle this at the moment 
-
-})
-
 router.post('/:eventID/checkin', async(req, res) => {
     // get the event row from the eventID
     const { eventID } = req.params;
@@ -53,7 +48,8 @@ router.post('/:eventID/checkin', async(req, res) => {
     VALUES (${meetingID}, ${eventID}, '${name}', GETDATE());`
     const attendeeResp = await req.sql.query(addAttendeeQuery)
     res.send(`success adding ${name} to the event`)
-})
+});
+
 router.get('/:eventID/currentAttendees', async(req, res) => {
     try {
         const { eventID } = req.params;
@@ -84,7 +80,6 @@ router.get('/:eventID/currentAttendees', async(req, res) => {
         res.status(500).json({ status: 'error', error: error.message });
     }
 });
-
 
 router.put('/:eventID/end', async(req, res) => {
     try{

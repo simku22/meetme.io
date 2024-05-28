@@ -2,7 +2,7 @@ import { Routes, HashRouter, Route } from 'react-router-dom';
 import { useState } from 'react';
 import { Header } from './Header.js';
 import { Footer } from './Footer.js';
-import { Theme } from '@radix-ui/themes';
+import { Theme, Container } from '@radix-ui/themes';
 import { LandingPage } from './Landing.js';
 import { Dashboard } from './Dashboard.js';
 import { JoinMeeting } from './JoinMeeting.js';
@@ -17,9 +17,16 @@ function App() {
   }
   console.log(loginData);
 
+  const mockData = {
+    "status": "loggedin",
+    "userInfo": {
+        "name": "Simon Kurgan",
+        "username": "simku22@uw.edu"
+    }
+  }
+
   return (
-    <div id="app" className='ml-36 mr-36'>
-      <Theme
+    <Theme
         accentColor="indigo"
         grayColor="slate"
         panelBackground="translucent"
@@ -27,17 +34,18 @@ function App() {
         radius="medium"
         appearance="inherit"
       >
-        <HashRouter>
-          {<Header updateLogin={userSignIn}/>}
-          <Routes>
-            <Route path="/" element={ <LandingPage session={loginData} /> } />
-            <Route path="/join/:eventID" element={ <JoinMeeting/> } />
-            <Route path="/event/:eventID/dashboard" element={ <Dashboard/> } />
-          </Routes>
-          {/* <Footer /> */}
-        </HashRouter>
-      </Theme>
-    </div>
+      <Container id="app" pr="5" pl="5">
+          <HashRouter>
+            {<Header updateLogin={userSignIn}/>}
+            <Routes>
+              <Route path="/" element={ <LandingPage session={mockData} /> } />
+              <Route path="/join/:eventID" element={ <JoinMeeting/> } />
+              <Route path="/event/:eventID/dashboard" element={ <Dashboard/> } />
+            </Routes>
+            {/* <Footer /> */}
+          </HashRouter>
+      </Container >
+    </Theme>
   );
 }
 

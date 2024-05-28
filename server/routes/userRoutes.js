@@ -4,7 +4,6 @@ var router = express.Router();
 router.post('/create', async(req, res) => {
     try {
         const { email } = req.body;
-        if (!validateEmail(email)) res.status(500).json({ status: 'error', error: 'email in incorrect format'});
         const createUserQuery = `
             INSERT INTO users (user_email, signup_date)
             SELECT DISTINCT '${email}' as email, GETDATE() as date
@@ -33,11 +32,6 @@ router.get('/myIdentity', async (req, res, next) => {
     }
 });
 
-function validateEmail(email) {
-    var re = new RegExp(/\S+@\S+\.\S+/);
-    return re.test(email);
-}
-
 router.get('/past-events', async(req, res) => {
     if (req.session.isAuthenticated) {
         try{
@@ -53,7 +47,5 @@ router.get('/past-events', async(req, res) => {
         res.status(500).json({ status: 'not logged in'});
     }
 })
-
-
 
 export default router;

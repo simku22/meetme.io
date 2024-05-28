@@ -5,7 +5,6 @@ import axios from 'axios';
 
 export const Header = (props) => {
   const location = useNavigate();
-
   const [loginData, setLoginData] = useState({});
 
   useEffect(() => {
@@ -31,7 +30,8 @@ export const Header = (props) => {
           <img className="m-4 ml-2 mr-3 h-8" src="checked.png" alt="imhere.io main logo" />
         </div>
         <div className="flex flex-row justify-center items-center">
-          {loginData.status === 'loggedin' && <img src="user.png" className="h-8 transform hover:scale-110 transition-transform" />}
+          {/* For the time being we have no use case for the profile icon */}
+          {/* {loginData.status === 'loggedin' && <img src="user.png" className="h-8 transform hover:scale-110 transition-transform" />} */}
           <a href={`${window.location.origin}/${loginData.status === 'loggedin' ? "signout" : "signin"}`}>
             <Button className="h-8 m-2" size="2" variant="soft">
               {loginData.status === 'loggedin' ? "Logout" : "Login"}
