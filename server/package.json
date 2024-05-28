@@ -19,7 +19,8 @@
     "mssql": "^10.0.2",
     "nodemon": "^3.1.0",
     "npm": "^10.8.0",
-    "qrcode": "^1.5.3"
+    "qrcode": "^1.5.3",
+    "url": "^0.11.3"
   },
   "devDependencies": {
     "dotenv": "^16.4.5"
