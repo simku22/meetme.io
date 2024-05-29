@@ -89,7 +89,7 @@ export const Dashboard = (props) => {
         >
           <QRCode
             style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-            value={`http://localhost:3000/`}
+            value={`${window.location.origin}/#/join/${eventID}`}
           />
         </Box>
         <Box
