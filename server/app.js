@@ -21,7 +21,7 @@ const authConfig = {
     clientId: process.env.CLIENT_ID,
     authority: process.env.AUTHORITY,
     clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: "http://localhost:3000/redirect",
+    redirectUri: "redirect",
   },
   system: {
     loggerOptions: {
