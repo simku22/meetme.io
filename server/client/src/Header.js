@@ -1,11 +1,12 @@
 import { Button } from '@radix-ui/themes';
 import { useState, useEffect } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar"; 
 import axios from 'axios';
 
 export const Header = (props) => {
   const location = useNavigate();
-  const [loginData, setLoginData] = useState({});
+  const [ loginData, setLoginData ] = useState({});
 
   useEffect(() => {
     const showMe = async () => {
@@ -37,6 +38,12 @@ export const Header = (props) => {
               {loginData.status === 'loggedin' ? "Logout" : "Login"}
             </Button>
           </a>
+          {loginData.status === 'loggedin' && 
+            <Avatar className="transform hover:scale-110 transition-transform mr-4">
+              <AvatarImage src={`https://github.com/${loginData.userInfo.username.split('@')[0]}.png`} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+          }
           <a className="ml-auto" href="https://github.com/info441-sp24/final-project-simku22" target="_blank" rel="noopener noreferrer">
             <img
               className="h-6 transform hover:scale-110 transition-transform"

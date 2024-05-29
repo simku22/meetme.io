@@ -1,5 +1,4 @@
 import {
-  Button,
   Grid,
   Box,
   DecorativeBox,
@@ -13,6 +12,7 @@ import {
   Text,
   Separator,
 } from "@radix-ui/themes";
+import { Button } from "./components/ui/button"
 import React, { useEffect, useState, useCallback } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useParams } from "react-router-dom";
@@ -21,7 +21,7 @@ import QRCode from "react-qr-code";
 //import { WebSocketDemo } from './websocketDemo';
 
 export const Dashboard = (props) => {
-  const [users, setUsers] = useState(["test"]);
+  const [ users, setUsers ] = useState(["test"]);
   const { eventID } = useParams();
 
   const WS_URL = `ws://localhost:3000/eventSocket?eventID=${eventID}`;
@@ -75,45 +75,80 @@ export const Dashboard = (props) => {
   //     fetchUsers();
   // }, []);
 
+    let userCards = users.map((name, index) => {
+        let dateJoined = new Date();
+        let options = { timeZone: 'America/Los_Angeles' };
+        let pstDateJoined = dateJoined.toLocaleString('en-US', options);
+    
+        return (
+            <Box key={index}>
+                <Card className="m-4">
+                    <Flex gap="3" align="center">
+                        <DataList.Root>
+                            <DataList.Item align="center">
+                                <DataList.Label>Name</DataList.Label>
+                                <DataList.Value>{name}</DataList.Value>
+                            </DataList.Item>
+                            <DataList.Item>
+                                <DataList.Label>Date Joined (PST)</DataList.Label>
+                                <DataList.Value>{pstDateJoined}</DataList.Value>
+                            </DataList.Item>
+                        </DataList.Root>
+                    </Flex>
+                </Card>
+            </Box>
+        );
+    });
+
   return (
     <div className="justify-center items-center">
-      {/* <Heading weight="bold" size="4" className="m-4">Dashboard</Heading> */}
       <div className="eventDashboard">
+        <div className="flex flex-col justify-center">
+            <Box
+            id="canvas"
+            style={{
+                margin: '15px',
+                padding: '10px',
+                backgroundColor: "white",
+                border: "2px solid black",
+                borderRadius: "10px",
+            }}
+            >
+                <QRCode
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                value={`${window.location.origin}/#/join/${eventID}`}
+                />
+            </Box>
+            <Button 
+                variant="default"
+                size="sm"
+                onClick={startMeeting}
+                className="ml-4 mr-4 mb-2"
+                style={{ color: "white", backgroundColor: "blue" }}
+            >Start Meeting</Button>
+            <Button 
+                variant="default"
+                size="sm"
+                onClick={endMeeting}
+                className="ml-4 mr-4 mb-2"
+                style={{ color: "white", backgroundColor: "red" }}
+            >End Meeting</Button>
+        </div>
         <Box
-          id="canvas"
           style={{
-            backgroundColor: "lightgray",
-            padding: "20px",
+            margin: '15px',
+            backgroundColor: "white",
+            border: "2px solid black",
             borderRadius: "10px",
-          }}
-        >
-          <QRCode
-            style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-            value={`${window.location.origin}/#/join/${eventID}`}
-          />
-        </Box>
-        <Box
-          style={{
-            backgroundColor: "lightblue",
-            padding: "20px",
-            borderRadius: "10px",
-          }}
+        }}
         >
           <p
             id={"attendees_" + eventID}
             style={{ fontSize: "18px", fontWeight: "bold" }}
           >
-            {users}
+            {userCards}
           </p>
         </Box>
-      </div>
-      <div className="meetingButtons">
-        <Button size="3" variant="soft" onClick={startMeeting}>
-          Start meeting
-        </Button>
-        <Button size="3" variant="soft" color="crimson" onClick={endMeeting}>
-          End meeting
-        </Button>
       </div>
     </div>
   );
