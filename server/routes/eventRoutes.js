@@ -17,6 +17,36 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.post("/delete", async (req, res) => {
+  try {
+    const { eventName, user_id } = req.body;
+    const deleteEventQuery = `
+      DELETE FROM events
+      WHERE event_name = '${eventName}' AND user_id = '${user_id}';
+    `;
+    await req.sql.query(deleteEventQuery);
+    res.send("success");
+  } catch (error) {
+    res.status(500).json({ status: "error", error: error.message });
+  }
+});
+
+router.post("/end", async (req, res) => {
+  try {
+    const { eventID } = req.body;
+    const updateEventQuery = `
+      UPDATE events
+      SET is_active = 0
+      WHERE event_id = ${eventID};
+    `;
+    await req.sql.query(updateEventQuery);
+    res.send("success");
+  } catch (error) {
+    res.status(500).json({ status: "error", error: error.message });
+  }
+});
+
+
 router.post("/:eventID/checkin", async (req, res) => {
   // get the event row from the eventID
   const { eventID } = req.params;
@@ -99,19 +129,6 @@ router.get("/:eventID/currentAttendees", async (req, res) => {
     const attendees = attendeesResp.recordset;
 
     res.json(attendees);
-  } catch (error) {
-    res.status(500).json({ status: "error", error: error.message });
-  }
-});
-
-router.post("/:eventID/end", async (req, res) => {
-  try {
-    const { eventID } = req.params;
-    // get the event row from the eventID
-    const resp = await req.sql.query(
-      "UPDATE events SET is_active = 0 WHERE event_id = " + eventID
-    );
-    res.send("success");
   } catch (error) {
     res.status(500).json({ status: "error", error: error.message });
   }
