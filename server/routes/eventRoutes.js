@@ -31,6 +31,7 @@ router.post("/delete", async (req, res) => {
   }
 });
 
+// set is_active to 0, so attendees cant join the event
 router.post("/end", async (req, res) => {
   try {
     const { eventID } = req.body;
@@ -45,7 +46,6 @@ router.post("/end", async (req, res) => {
     res.status(500).json({ status: "error", error: error.message });
   }
 });
-
 
 router.post("/:eventID/checkin", async (req, res) => {
   // get the event row from the eventID
@@ -69,22 +69,13 @@ router.post("/:eventID/checkin", async (req, res) => {
     return;
   }
 
-  // at this point, we know we have an existing event that is currently active
-  // we should now add the attendee to the most currently started meeting
-  //                                          ^ this implementation can change if we find anything better
-  // const queryString = `SELECT TOP 1 meeting_id FROM meetings WHERE event_id = ${eventID} ORDER BY created DESC`;
-  // const meetingResp = await req.sql.query(queryString);
-  // const meetingID = meetingResp.recordset[0].meeting_id;
-  // // should probably check to make sure meeting_id is valid or something
-
-  // // add the attendee to the meeting
-
-  // const addAttendeeQuery = `INSERT INTO attendees (meeting_id, event_id, attendee_name, joined)
-  //   VALUES (${meetingID}, ${eventID}, '${name}', GETDATE());`;
-  // const attendeeResp = await req.sql.query(addAttendeeQuery);
+  // // add the attendee to the meeting and post to socket
+  const addAttendeeQuery = `INSERT INTO attendees ( event_id, attendee_name, time_joined)
+    VALUES (${eventID}, '${name}', GETDATE());`;
+  const attendeeResp = await req.sql.query(addAttendeeQuery);
 
   try {
-    const response = await axios.post(`http://localhost:3000/socketPostUser`, {
+    const response = await axios.post(`${process.env.URL}/socketPostUser`, {
       name: name,
       eventID: eventID,
     });
@@ -95,36 +86,13 @@ router.post("/:eventID/checkin", async (req, res) => {
   res.send(`success adding ${name} to the event`);
 });
 
-router.get("/:eventID/currentAttendees", async (req, res) => {
+router.get("/:eventID/attendees", async (req, res) => {
   try {
     const { eventID } = req.params;
-    // check if the event exists
-    const eventResp = await req.sql.query(
-      "SELECT * FROM events WHERE event_id = " + eventID
-    );
-    const event = eventResp.recordset[0];
-    if (!event) {
-      res.status(404).send("There is no event record with that event ID");
-      return;
-    }
 
-    // check if the event is active
-    if (!event.is_active) {
-      res
-        .status(404)
-        .send("The event at this event ID is not currently active");
-      return;
-    }
-
-    // get the newest meeting for the event
-    const meetingResp = await req.sql.query(
-      `SELECT TOP 1 meeting_id FROM meetings WHERE event_id = ${eventID} ORDER BY created DESC`
-    );
-    const meetingID = meetingResp.recordset[0].meeting_id;
-
-    // get all attendees for the meeting
+    // get all attendees for the event
     const attendeesResp = await req.sql.query(
-      `SELECT * FROM attendees WHERE meeting_id = ${meetingID}`
+      `SELECT attendee_name, time_joined FROM attendees WHERE event_id = ${eventID}`
     );
     const attendees = attendeesResp.recordset;
 
@@ -133,7 +101,5 @@ router.get("/:eventID/currentAttendees", async (req, res) => {
     res.status(500).json({ status: "error", error: error.message });
   }
 });
-
-router.use("/:eventID/meeting", meetingRoutes);
 
 export default router;

@@ -79,9 +79,8 @@ app.get("/signout", (req, res, next) => {
     postLogoutRedirectUri: "/", // redirect here after logout
   })(req, res, next);
 });
-////////////////////////////////
-let allSockets = {};
 
+let allSockets = {};
 app.ws("/eventSocket", (ws, res, req) => {
   // get eventID from websocket
   const parameters = url.parse(res.url, true);
@@ -94,6 +93,7 @@ app.ws("/eventSocket", (ws, res, req) => {
   // add the socket to the dict
   allSockets[mySocketID] = ws;
 
+  // this may be redundant but I am not totally sure
   ws.on("message", (msg) => {
     console.log(msg);
     const socketMessage = JSON.parse(msg);
@@ -112,13 +112,16 @@ app.ws("/eventSocket", (ws, res, req) => {
 
 app.post("/socketPostUser", (req, res) => {
   const { name, eventID } = req.body;
+  let dateJoined = new Date();
+  let options = { timeZone: "America/Los_Angeles" };
+  let pstDateJoined = dateJoined.toLocaleString("en-US", options);
   const socket = allSockets[eventID];
   if (socket) {
-    socket.send(`{"event": "join","name": "${name}"}`);
+    socket.send(
+      `{"event": "join","name": "${name}", "time": "${pstDateJoined}"}`
+    );
   }
 });
-
-///////////////////////////////////
 
 app.use(authProvider.interactionErrorHandler());
 

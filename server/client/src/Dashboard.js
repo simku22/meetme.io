@@ -12,7 +12,7 @@ import {
   Text,
   Separator,
 } from "@radix-ui/themes";
-import { Button } from "./components/ui/button"
+import { Button } from "./components/ui/button";
 import React, { useEffect, useState, useCallback } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useParams } from "react-router-dom";
@@ -21,10 +21,11 @@ import QRCode from "react-qr-code";
 //import { WebSocketDemo } from './websocketDemo';
 
 export const Dashboard = (props) => {
-  const [ users, setUsers ] = useState(["test"]);
+  const [users, setUsers] = useState([]);
   const { eventID } = useParams();
+  const WS_URL = `wss://${window.location.hostname}/eventSocket?eventID=${eventID}`;
+  //const WS_URL = `ws://localhost:3000/eventSocket?eventID=${eventID}`;
 
-  const WS_URL = `ws://localhost:3000/eventSocket?eventID=${eventID}`;
   const { sendMessage, lastMessage, readyState } = useWebSocket(WS_URL, {
     share: false,
     shouldReconnect: () => true,
@@ -39,7 +40,7 @@ export const Dashboard = (props) => {
       console.log(lastMessage);
       const lastJsonMessage = JSON.parse(lastMessage.data);
       if (lastJsonMessage.event === "join") {
-        setUsers([...users, lastJsonMessage.name]);
+        setUsers([...users, [lastJsonMessage.name, lastJsonMessage.time]]);
       }
     }
   }, [lastMessage]);
@@ -62,85 +63,93 @@ export const Dashboard = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //     const fetchUsers = async () => {
-  //         try {
-  //             const response = await axios.get(`http://localhost:3000/event/${eventID}/currentAttendees`);
-  //             setUsers(response.data.map(user => user.attendee_name));
-  //         } catch (error) {
-  //             console.error('Error fetching users:', error);
-  //         }
-  //     };
-
-  //     fetchUsers();
-  // }, []);
-
-    let userCards = users.map((name, index) => {
-        let dateJoined = new Date();
-        let options = { timeZone: 'America/Los_Angeles' };
-        let pstDateJoined = dateJoined.toLocaleString('en-US', options);
-    
-        return (
-            <Box key={index}>
-                <Card className="m-4">
-                    <Flex gap="3" align="center">
-                        <DataList.Root>
-                            <DataList.Item align="center">
-                                <DataList.Label>Name</DataList.Label>
-                                <DataList.Value>{name}</DataList.Value>
-                            </DataList.Item>
-                            <DataList.Item>
-                                <DataList.Label>Date Joined (PST)</DataList.Label>
-                                <DataList.Value>{pstDateJoined}</DataList.Value>
-                            </DataList.Item>
-                        </DataList.Root>
-                    </Flex>
-                </Card>
-            </Box>
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(
+          `${window.location.origin}/event/${eventID}/attendees`
         );
-    });
+        setUsers(
+          response.data.map((user) => [user.attendee_name, user.time_joined])
+        );
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  let userCards = users.map(([name, time_joined], index) => {
+    let dateJoined = new Date(time_joined);
+    let options = { timeZone: "America/Los_Angeles" };
+    let pstDateJoined = dateJoined.toLocaleString("en-US", options);
+
+    return (
+      <Box key={index}>
+        <Card className="m-4">
+          <Flex gap="3" align="center">
+            <DataList.Root>
+              <DataList.Item align="center">
+                <DataList.Label>Name</DataList.Label>
+                <DataList.Value>{name}</DataList.Value>
+              </DataList.Item>
+              <DataList.Item>
+                <DataList.Label>Date Joined (PST)</DataList.Label>
+                <DataList.Value>{pstDateJoined}</DataList.Value>
+              </DataList.Item>
+            </DataList.Root>
+          </Flex>
+        </Card>
+      </Box>
+    );
+  });
 
   return (
     <div className="justify-center items-center">
       <div className="eventDashboard">
         <div className="flex flex-col justify-center">
-            <Box
+          <Box
             id="canvas"
             style={{
-                margin: '15px',
-                padding: '10px',
-                backgroundColor: "white",
-                border: "2px solid black",
-                borderRadius: "10px",
+              margin: "15px",
+              padding: "10px",
+              backgroundColor: "white",
+              border: "2px solid black",
+              borderRadius: "10px",
             }}
-            >
-                <QRCode
-                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-                value={`${window.location.origin}/#/join/${eventID}`}
-                />
-            </Box>
-            <Button 
-                variant="default"
-                size="sm"
-                onClick={startMeeting}
-                className="ml-4 mr-4 mb-2"
-                style={{ color: "white", backgroundColor: "blue" }}
-            >Start Meeting</Button>
-            <Button 
-                variant="default"
-                size="sm"
-                onClick={endMeeting}
-                className="ml-4 mr-4 mb-2"
-                style={{ color: "white", backgroundColor: "red" }}
-            >End Meeting</Button>
+          >
+            <QRCode
+              style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              value={`${window.location.origin}/#/join/${eventID}`}
+            />
+          </Box>
+          <Button
+            variant="default"
+            size="sm"
+            onClick={startMeeting}
+            className="ml-4 mr-4 mb-2"
+            style={{ color: "white", backgroundColor: "blue" }}
+          >
+            Start Meeting
+          </Button>
+          <Button
+            variant="default"
+            size="sm"
+            onClick={endMeeting}
+            className="ml-4 mr-4 mb-2"
+            style={{ color: "white", backgroundColor: "red" }}
+          >
+            End Meeting
+          </Button>
         </div>
         <Box
           style={{
-            margin: '15px',
+            margin: "15px",
             backgroundColor: "white",
             border: "2px solid black",
             borderRadius: "10px",
-        }}
+          }}
         >
           <p
             id={"attendees_" + eventID}
