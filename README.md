@@ -21,9 +21,7 @@ As developers, we want to build this app to explore 1) how to create an easy-to-
 
 # Design
 
-![alt text](./server/descriptionimages/landingpage.png)
-
-![alt text](./server/descriptionimages/meetingpage.png)
+![alt text](image.png)
 
 # Technical Description
 
