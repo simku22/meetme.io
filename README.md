@@ -72,9 +72,3 @@ We intend to use PostgreSQL or MySQL to store data in our MVP. Provided this wil
 ## MVP Images
 
 ![alt text](/server/descriptionimages/IMG_4983.png)
-
-![alt text](/server/descriptionimages/image.png)
-
-![alt text](/server/descriptionimages/image-1.png)
-
-![alt text](/server/descriptionimages/image-2.png)
